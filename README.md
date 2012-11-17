@@ -7,11 +7,12 @@ xcodeからpearみたいにdbを操作できればいいなと。<br />
 1.libsqlite3.0.dylibをフレームワークに追加<br />
 2.DBClassディレクトリをプロジェクトに入れる<br />
 3.sqlite3で作成したDBをプロジェクトに入れる<br />
+4.DB.hの中のデータベース名を自分の物に合わせて変更する<br />
 <br />
 使用方法<br />
 使用したいファイルで<br />
 //インポート<br />
-#import "DB.h"<br />
+import "DB.h"<br />
 <br />
 //インスタンス作成<br />
 DB *db = [[DB alloc]init];<br />
