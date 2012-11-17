@@ -227,7 +227,7 @@ static NSString* const DB_FILE = @"database.sqlite";
     
     NSArray *wkeys = [where allKeys];
     
-    for (int i = 0; i < [keys count]; i++) {
+    for (int i = 0; i < [wkeys count]; i++) {
         NSString *str = [NSString stringWithFormat:@"%@ = ? ",[wkeys objectAtIndex:i]];
         if (i+1 < [wkeys count]) {
             sql = [sql stringByAppendingString:@"and "];
@@ -264,6 +264,52 @@ static NSString* const DB_FILE = @"database.sqlite";
     return result;
 }
 
+- (BOOL)delete:(NSString *)table:(NSDictionary *)where {
+    BOOL result = TRUE;
+    //トランザクション開始(exclusive)
+    [_db beginTransaction];
+    
+    NSString *sql = @"delete from ";
+    sql = [sql stringByAppendingString:table];
+    sql = [sql stringByAppendingString:@" where "];
+    
+    NSArray *wkeys = [where allKeys];
+    NSMutableArray *value = [[NSMutableArray alloc]init];
+    
+    for (int i = 0; i < [wkeys count]; i++) {
+        NSString *str = [NSString stringWithFormat:@"%@ = ? ",[wkeys objectAtIndex:i]];
+        if (i+1 < [wkeys count]) {
+            sql = [sql stringByAppendingString:@"and "];
+        }
+        
+        sql = [sql stringByAppendingString:str];
+        [value addObject:[where objectForKey:[wkeys objectAtIndex:i]]];
+    }
+    
+    //ステートメントの再利用フラグ
+    //おそらくループ内で同一クエリの更新処理を行う場合バインドクエリの準備を何回
+    //も実行してしまうのためこのフラグを設定する。
+    //このフラグが設定されているとステートメントが再利用される。
+    [_db setShouldCacheStatements:YES];
+    
+    
+    //insertクエリ実行(プリミティブ型は使えない)
+    //    [_db executeUpdate:@"insert into example values (?, ?, ?, ?)",
+    //                                1, 2, @"test", 4.1];
+    // executeUpdateWithFormatメソッドで可能。
+    [_db executeUpdate:sql withArgumentsInArray:value];
+    
+    //check
+    if ([_db hadError]) {
+        result = FALSE;
+        NSLog(@"Err %d: %@", [_db lastErrorCode], [_db lastErrorMessage]);
+    }
+    
+    //commit
+    [_db commit];
+    
+    return result;
+}
 
 
 

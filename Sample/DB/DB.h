@@ -21,5 +21,7 @@
 - (BOOL)insert:(NSString *)table:(NSDictionary *)data;
 //アップート
 - (BOOL)update:(NSString *)table:(NSDictionary *)data:(NSDictionary *)where;
+//デリート
+- (BOOL)delete:(NSString *)table:(NSDictionary *)where;
 
 @end
