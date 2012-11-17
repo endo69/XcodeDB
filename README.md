@@ -38,5 +38,19 @@ NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];<br />
 [dict setObject:@"satomi" forKey:@"name"];<br />
 <br />
 //実行<br />
-[db insert:table:dict];
+[db insert:table:dict];<br />
+<br />
+//アップデートする時<br />
+//テーブル指定<br />
+NSString *table = @"test";<br />
+//ディクショナリ作成<br />
+NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];<br />
+//nameをsatoshiに変更する<br />
+[dict setObject:@"satoshi" forKey:@"name"];<br />
+//条件用のディクショナリを作成<br />
+NSMutableDictionary *where = [[NSMutableDictionary alloc]init];<br />
+//条件はidが3ということで。<br />
+[where setObject:@"3" forKey:@"id"];<br />
+//アップデート<br />
+[db update:table:dict:where];<br />
 
