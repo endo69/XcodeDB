@@ -69,17 +69,15 @@
     [db update:table:dict:where];
     
     //SQL 条件値は?にする
-    NSString *sql = @"select * from test ";
+    NSString *sql = @"select * from test where id = ?";
     //?を変換する配列
     NSMutableArray *param = [[NSMutableArray alloc]init];
-    //idは3の条件で
-    //[param addObject:@"2"];
-    //nameはtakaizumiの条件で
-    //[param addObject:@"yasuda"];
+    //idは2の条件で
+    [param addObject:@"1"];
     //ゲット
-    NSArray *list = [db getAll:sql:param];
+    NSDictionary *data = [db getRow:sql:param];
     //ログに出してみる
-    NSLog(@"%@",list);
+    NSLog(@"%@",data);
      
     
 }

@@ -88,6 +88,29 @@ static NSString* const DB_FILE = @"database.sqlite";
     
 }
 
+- (NSDictionary*)getRow:(NSString *)sql:(NSArray *)param {
+    FMResultSet *rs = [_db executeQuery:sql withArgumentsInArray:param];
+    
+    if ([_db hadError]) {
+        NSLog(@"Err %d: %@", [_db lastErrorCode], [_db lastErrorMessage]);
+    }
+    
+    NSDictionary *dic = [[NSDictionary alloc]init];
+    //結果の取得(カラム名指定)
+    while ([rs next]) {
+        //結果格納用オブジェクト
+        dic = [rs resultDictionary];
+        //NSLog(@"%@",dic);
+        
+        break;
+    }
+    //close ResultSet.
+    [rs close];
+    
+    return dic;
+    
+}
+
 - (BOOL)insert:(NSString *)table:(NSDictionary *)data {
     BOOL result = TRUE;
     //トランザクション開始(exclusive)
@@ -214,7 +237,7 @@ static NSString* const DB_FILE = @"database.sqlite";
         [value addObject:[where objectForKey:[wkeys objectAtIndex:i]]];
     }
     
-    NSLog(@"%@",sql);
+    //NSLog(@"%@",sql);
     
     //ステートメントの再利用フラグ
     //おそらくループ内で同一クエリの更新処理を行う場合バインドクエリの準備を何回
