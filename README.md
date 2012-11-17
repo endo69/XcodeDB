@@ -20,7 +20,7 @@ DB *db = [[DB alloc]init];<br />
 [db openDatabase];<br />
 <br />
 <br />
-//リストで取得したい時
+//リストで取得したい時<br />
 //実行するSQL,whereの条件値は?にする<br />
 NSString *sql = @"select * from test where id = ? ";<br />
 //上記の?と紐づくデータをarrayにpushして行く<br />
