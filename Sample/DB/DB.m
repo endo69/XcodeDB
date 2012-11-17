@@ -88,5 +88,86 @@ static NSString* const DB_FILE = @"database.sqlite";
     
 }
 
+- (BOOL)insert:(NSString *)table:(NSDictionary *)data {
+    BOOL result = TRUE;
+    //トランザクション開始(exclusive)
+    [_db beginTransaction];
+    
+    NSString *sql = @"insert into ";
+    sql = [sql stringByAppendingString:table];
+    sql = [sql stringByAppendingString:@" ( "];
+    
+    NSArray *keys = [data allKeys];
+    NSMutableArray *value = [[NSMutableArray alloc]init];
+    
+    for (int i = 0; i < [keys count]; i++) {
+        sql = [sql stringByAppendingString:[keys objectAtIndex:i]];
+        
+        NSLog(@"%d",i);
+        NSLog(@"%d",[keys count]);
+        
+        if (i+1 >= [keys count]) {
+            sql = [sql stringByAppendingString:@")"];
+        } else {
+            sql = [sql stringByAppendingString:@","];
+        }
+        
+    }
+    
+    sql = [sql stringByAppendingString:@" values ( "];
+    
+    for (int i = 0; i < [keys count]; i++) {
+        NSLog(@"key: %@, value: %@\n",
+        [keys objectAtIndex:i],
+        [data objectForKey:[keys objectAtIndex:i]]);
+        /*
+        NSString *str = [NSString stringWithFormat:@"%@ = ?,",[keys objectAtIndex:i]];
+        
+         */
+        
+        sql = [sql stringByAppendingString:@"?,"];
+        [value addObject:[data objectForKey:[keys objectAtIndex:i]]];
+    }
+    
+    
+    NSString *template = @")";
+    NSRegularExpression *regexp =
+    [NSRegularExpression regularExpressionWithPattern:@",$"
+                                              options:0
+                                                error:nil];
+    sql =
+    [regexp stringByReplacingMatchesInString:sql
+                                     options:0
+                                       range:NSMakeRange(0,sql.length)
+                                withTemplate:template];
+    
+    
+    NSLog(@"%@",sql);
+    //ステートメントの再利用フラグ
+    //おそらくループ内で同一クエリの更新処理を行う場合バインドクエリの準備を何回
+    //も実行してしまうのためこのフラグを設定する。
+    //このフラグが設定されているとステートメントが再利用される。
+    [_db setShouldCacheStatements:YES];
+    
+    
+    //insertクエリ実行(プリミティブ型は使えない)
+    //    [_db executeUpdate:@"insert into example values (?, ?, ?, ?)",
+    //                                1, 2, @"test", 4.1];
+    // executeUpdateWithFormatメソッドで可能。
+    [_db executeUpdate:sql withArgumentsInArray:value];
+    
+    //check
+    if ([_db hadError]) {
+        result = FALSE;
+        NSLog(@"Err %d: %@", [_db lastErrorCode], [_db lastErrorMessage]);
+    }
+    
+    //commit
+    [_db commit];
+    
+    return result;
+}
+
+
 
 @end

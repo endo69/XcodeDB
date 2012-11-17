@@ -15,5 +15,7 @@
 - (BOOL)openDatabase;
 //リストで取得
 - (NSArray*)getAll:(NSString *)sql:(NSArray *)param;
+- (BOOL)insert:(NSDictionary *)data;
+- (BOOL)insert:(NSString *)table:(NSDictionary *)data;
 
 @end

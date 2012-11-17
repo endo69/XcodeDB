@@ -25,12 +25,22 @@
     
     NSString *sql = @"select * from test where id = ? and name = ? ";
     NSMutableArray *param = [[NSMutableArray alloc]init];
-    [param addObject:@"1"];
-    [param addObject:@"endo"];
+    [param addObject:@"3"];
+    [param addObject:@"takaizumi"];
     
     NSArray *list = [db getAll:sql:param];
     
     NSLog(@"%@",list);
+    
+    
+    NSString *table = @"test";
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    [dict setObject:@"4" forKey:@"id"];
+    [dict setObject:@"satomi" forKey:@"name"];
+    
+    [db insert:table:dict];
+     
+     
     
 }
 
