@@ -3,7 +3,7 @@ XcodeDB
 
 xcodeからpearみたいにdbを操作できればいいなと。
 
-準備
+準備<br />
 1.libsqlite3.0.dylibをフレームワークに追加
 2.DBClassディレクトリをプロジェクトに入れる
 3.sqlite3で作成したDBをプロジェクトに入れる
