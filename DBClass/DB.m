@@ -10,7 +10,7 @@
 #import "FMDatabase.h"
 
 //DBファイル名
-static NSString* const DB_FILE = @"database.sqlite";
+static NSString* const DB_FILE = @"endo20.db";
 
 @implementation DB {
     FMDatabase*     _db;
@@ -311,6 +311,39 @@ static NSString* const DB_FILE = @"database.sqlite";
     return result;
 }
 
+- (BOOL)deleteAll:(NSString *)table {
+    BOOL result = TRUE;
+    //トランザクション開始(exclusive)
+    [_db beginTransaction];
+    
+    NSString *sql = @"delete from ";
+    sql = [sql stringByAppendingString:table];
+    
+       
+    //ステートメントの再利用フラグ
+    //おそらくループ内で同一クエリの更新処理を行う場合バインドクエリの準備を何回
+    //も実行してしまうのためこのフラグを設定する。
+    //このフラグが設定されているとステートメントが再利用される。
+    [_db setShouldCacheStatements:YES];
+    
+    
+    //insertクエリ実行(プリミティブ型は使えない)
+    //    [_db executeUpdate:@"insert into example values (?, ?, ?, ?)",
+    //                                1, 2, @"test", 4.1];
+    // executeUpdateWithFormatメソッドで可能。
+    [_db executeUpdate:sql];
+    
+    //check
+    if ([_db hadError]) {
+        result = FALSE;
+        NSLog(@"Err %d: %@", [_db lastErrorCode], [_db lastErrorMessage]);
+    }
+    
+    //commit
+    [_db commit];
+    
+    return result;
+}
 
 
 @end

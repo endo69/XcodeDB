@@ -23,5 +23,7 @@
 - (BOOL)update:(NSString *)table:(NSDictionary *)data:(NSDictionary *)where;
 //デリート
 - (BOOL)delete:(NSString *)table:(NSDictionary *)where;
+//全部削除
+- (BOOL)deleteAll:(NSString *)table;
 
 @end
