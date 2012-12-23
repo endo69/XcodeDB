@@ -114,7 +114,7 @@ static NSString* const DB_FILE = @"endo28.db";
 - (BOOL)insert:(NSString *)table:(NSDictionary *)data {
     BOOL result = TRUE;
     //トランザクション開始(exclusive)
-    [_db beginTransaction];
+    //[_db beginTransaction];
     
     NSString *sql = @"insert into ";
     sql = [sql stringByAppendingString:table];
@@ -188,7 +188,7 @@ static NSString* const DB_FILE = @"endo28.db";
     }
     
     //commit
-    [_db commit];
+    //[_db commit];
     
     return result;
 }
@@ -196,7 +196,7 @@ static NSString* const DB_FILE = @"endo28.db";
 - (BOOL)update:(NSString *)table:(NSDictionary *)data:(NSDictionary *)where {
     BOOL result = TRUE;
     //トランザクション開始(exclusive)
-    [_db beginTransaction];
+    //[_db beginTransaction];
     
     NSString *sql = @"update ";
     sql = [sql stringByAppendingString:table];
@@ -259,7 +259,7 @@ static NSString* const DB_FILE = @"endo28.db";
     }
     
     //commit
-    [_db commit];
+    //[_db commit];
     
     return result;
 }
@@ -267,7 +267,7 @@ static NSString* const DB_FILE = @"endo28.db";
 - (BOOL)delete:(NSString *)table:(NSDictionary *)where {
     BOOL result = TRUE;
     //トランザクション開始(exclusive)
-    [_db beginTransaction];
+    //[_db beginTransaction];
     
     NSString *sql = @"delete from ";
     sql = [sql stringByAppendingString:table];
@@ -306,7 +306,7 @@ static NSString* const DB_FILE = @"endo28.db";
     }
     
     //commit
-    [_db commit];
+    //[_db commit];
     
     return result;
 }
@@ -314,7 +314,7 @@ static NSString* const DB_FILE = @"endo28.db";
 - (BOOL)deleteAll:(NSString *)table {
     BOOL result = TRUE;
     //トランザクション開始(exclusive)
-    [_db beginTransaction];
+    //[_db beginTransaction];
     
     NSString *sql = @"delete from ";
     sql = [sql stringByAppendingString:table];
@@ -340,7 +340,7 @@ static NSString* const DB_FILE = @"endo28.db";
     }
     
     //commit
-    [_db commit];
+    //[_db commit];
     
     return result;
 }
