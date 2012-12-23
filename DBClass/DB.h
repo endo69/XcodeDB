@@ -25,5 +25,10 @@
 - (BOOL)delete:(NSString *)table:(NSDictionary *)where;
 //全部削除
 - (BOOL)deleteAll:(NSString *)table;
-
+//begin
+-(void)begin;
+//commit
+-(void)commit;
+//rollback;
+-(void)rollback;
 @end

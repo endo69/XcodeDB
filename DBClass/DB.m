@@ -10,7 +10,7 @@
 #import "FMDatabase.h"
 
 //DBファイル名
-static NSString* const DB_FILE = @"endo20.db";
+static NSString* const DB_FILE = @"endo28.db";
 
 @implementation DB {
     FMDatabase*     _db;
@@ -345,5 +345,16 @@ static NSString* const DB_FILE = @"endo20.db";
     return result;
 }
 
+-(void)begin {
+    [_db beginTransaction];
+}
+
+-(void)commit {
+    [_db commit];
+}
+
+-(void)rollback {
+    [_db rollback];
+}
 
 @end
