@@ -230,7 +230,7 @@ static NSString* const DB_FILE = @"endo28.db";
     for (int i = 0; i < [wkeys count]; i++) {
         NSString *str = [NSString stringWithFormat:@"%@ = ? ",[wkeys objectAtIndex:i]];
         if (i+1 < [wkeys count]) {
-            sql = [sql stringByAppendingString:@"and "];
+            str  = [str stringByAppendingString:@"and "];
         }
         
         sql = [sql stringByAppendingString:str];
@@ -279,7 +279,7 @@ static NSString* const DB_FILE = @"endo28.db";
     for (int i = 0; i < [wkeys count]; i++) {
         NSString *str = [NSString stringWithFormat:@"%@ = ? ",[wkeys objectAtIndex:i]];
         if (i+1 < [wkeys count]) {
-            sql = [sql stringByAppendingString:@"and "];
+            str  = [str stringByAppendingString:@"and "];
         }
         
         sql = [sql stringByAppendingString:str];
@@ -297,6 +297,7 @@ static NSString* const DB_FILE = @"endo28.db";
     //    [_db executeUpdate:@"insert into example values (?, ?, ?, ?)",
     //                                1, 2, @"test", 4.1];
     // executeUpdateWithFormatメソッドで可能。
+    NSLog(@"sql = %@",sql);
     [_db executeUpdate:sql withArgumentsInArray:value];
     
     //check
